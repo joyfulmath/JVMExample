@@ -14,6 +14,7 @@ import java.util.Objects;
 public class DynamicProxyTest {
     interface IHello{
         void sayHello();
+        void sayGoodBay();
     }
 
     static class Hello implements IHello{
@@ -21,6 +22,11 @@ public class DynamicProxyTest {
         @Override
         public void sayHello() {
             TraceLog.i("Hello world!");
+        }
+
+        @Override
+        public void sayGoodBay() {
+            TraceLog.i("GoodBy");
         }
     }
 
@@ -36,6 +42,7 @@ public class DynamicProxyTest {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            TraceLog.i("method:"+method.getName());
             TraceLog.i("welcome");
             return method.invoke(originalObj,args);
         }
@@ -44,6 +51,7 @@ public class DynamicProxyTest {
     public static void action()
     {
         IHello hello = (IHello) new DynamicProxy().bind(new Hello());
-        hello.sayHello();
+        hello.sayGoodBay();
+        hello.toString();
     }
 }
